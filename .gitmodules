@@ -1,0 +1,8 @@
+[submodule "leatherman"]
+	path = leatherman
+	url = https://github.com/scottidler/leatherman
+	branch = master
+[submodule "repos/leatherman"]
+	path = repos/leatherman
+	url = https://github.com/scottidler/leatherman
+	branch = master

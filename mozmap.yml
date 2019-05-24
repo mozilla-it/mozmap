@@ -1,0 +1,6 @@
+version: v1
+domains:
+  - firefox.com
+  - mozilla.org
+  - mozilla-subhub.app
+  - mozilla-slack.app
