@@ -2,5 +2,7 @@ version: v1
 domains:
   - firefox.com
   - mozilla.org
-  - mozilla-subhub.app
-  - mozilla-slack.app
+  - sso.mozilla.com
+  - pto.mozilla.org
+  - dev.fxa.mozilla-subhub.app
+  - newbie.mozilla-slack.app
