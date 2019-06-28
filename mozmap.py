@@ -1,176 +1,148 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-version = 'v1'
 
 import os
-import re
 import sys
-import inspect
-sys.dont_write_bytecode = True
-
-SCRIPT_FILE = os.path.abspath(__file__)
-SCRIPT_NAME = os.path.basename(SCRIPT_FILE)
-SCRIPT_PATH = os.path.dirname(SCRIPT_FILE)
-NAME, EXT = os.path.splitext(SCRIPT_NAME)
-if os.path.islink(__file__):
-    REAL_FILE = os.path.abspath(os.readlink(__file__))
-    REAL_NAME = os.path.basename(REAL_FILE)
-    REAL_PATH = os.path.dirname(REAL_FILE)
-
+import json
+import click
+import shutil
 import requests
 
 from ruamel import yaml
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from itertools import product
+from attrdict import AttrDict
+from invoke import call, task, Task, Program, Collection
 
-from leatherman.dbg import dbg
 from leatherman.fuzzy import fuzzy
-
-DEFAULT = '\033[0;0m'
-GREEN   = '\033[01;32m'
-RED     = '\033[01;31m'
+from leatherman.dbg import dbg
+from leatherman.yaml import yaml_print
 
 
-URL = 'https://raw.githubusercontent.com/mozilla-it/mozmap/master/mozmap.yml'
-OUTPUTS = [
-    'yaml',
+TASKS = (
+    'dig',
+    'host',
+    'curl',
+    '302',
+    'hdrs',
+    'ssl',
+)
+
+OUTPUT = [
     'json',
+    'yaml',
 ]
 
-# the following colorize code was taken from here and slighly modified
-# src: https://stackoverflow.com/a/6196103
-def colorize(stdout_color, stderr_color, enabled=True):
-    '''
-    colorize: decorator for functions that print to stdout or stderr
-    '''
+WORKDIR = '.mozmap'
 
-    def apply_colorize(func):
-        class ColorWrapper(object):
-            def __init__(self, wrapee, color):
-                self.wrapee = wrapee
-                self.color = color
-            def __getattr__(self, attr):
-                if attr == 'write' and self.wrapee.isatty():
-                    return lambda x: self.wrapee.write(self.color + x + DEFAULT)
-                else:
-                    return getattr(self.wrapee, attr)
+URL = 'https://raw.githubusercontent.com/mozilla-it/mozmap/master/mozmap.yml'
+def config(url=URL):
+    response = requests.get(URL)
+    yml = yaml.safe_load(response.text)
+    return AttrDict(yml)
 
-        def wrapper(*args, **kwds):
-            old_stdout = sys.stdout
-            old_stderr = sys.stderr
-            sys.stdout = ColorWrapper(old_stdout, stdout_color)
-            sys.stderr = ColorWrapper(old_stderr, stderr_color)
-            try:
-                func(*args, **kwds)
-            finally:
-                sys.stdout = old_stdout
-                sys.stderr = old_stderr
+CFG = config()
 
-        return wrapper if enabled else func
+def default_output():
+    return OUTPUT[int(sys.stdout.isatty())]
 
-    return apply_colorize
+def output_print(obj, output):
+    if output == 'yaml':
+        yaml_print(obj)
+    elif output == 'json':
+        print(json.dumps(obj, indent=2))
 
-class MozMap():
-    '''
-    MozMap: calss for handling all actions with domains
-    '''
-    def __init__(self):
-        '''
-        init
-        '''
-        methods = inspect.getmembers(self, predicate=inspect.ismethod)
-        self.do_methods = {
-            name[3:]: method for name, method in methods if name.startswith('do_')
-        }
+@task(name='smeetup')
+def task_setup(ctx, workdir=WORKDIR):
+    print('- setup', file=sys.stderr)
+    shutil.rmtree(workdir, ignore_errors=True)
+    os.makedirs(workdir)
 
-    def execute(self, args):
-        '''
-        execute: function to parse args and execute the appropriate actions
-        '''
-        parser = ArgumentParser(
-            add_help=False)
-        parser.add_argument(
-            '-C', '--config',
-            metavar='CONFIG',
-            default=URL,
-            help=f'default="{URL}"; config location')
-        ns, rem = parser.parse_known_args(args)
-        try:
-            config = yaml.safe_load(open(ns.config))
-        except FileNotFoundError as er:
-            config = dict()
-        parser = ArgumentParser(
-            parents=[parser],
-            description=__doc__,
-            formatter_class=RawDescriptionHelpFormatter)
-        parser.set_defaults(**config)
-        parser.add_argument(
-            '--output',
-            metavar='OUTPUT',
-            choices=OUTPUTS,
-            default=OUTPUTS[0],
-            help=f'default="{OUTPUTS[0]}"; choices="{OUTPUTS}"; output format ')
-        subparsers = parser.add_subparsers(
-            dest='command',
-            title='commands',
-            description='choose command to run')
-        subparsers.required = True
-        [self.add_command(subparsers, name, method) for name, method in self.do_methods.items()]
-        self.ns = parser.parse_args(rem)
-        dbg(ns=self.ns)
-        self.ns.func(**self.ns.__dict__)
+@task(name='host', pre=[task_setup])
+def task_host(ctx, domain, workdir=WORKDIR):
+    '''run host on domain'''
+    print(f'- host {domain}', file=sys.stderr)
+    result = ctx.run(f'host {domain}', hide=True)
+    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
+    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/host')
 
-    def add_command(self, subparsers, name, method):
-        '''
-        add_command: adds a subcommand to MozMap, grabs parser arguments from the do_ function
-        '''
-        parser = subparsers.add_parser(name)
-        parser.set_defaults(func=method)
-        method(parser=parser)
-        return parser
+@task(name='dig', pre=[task_setup])
+def task_dig(ctx, domain, workdir=WORKDIR):
+    '''run dig on domain'''
+    print(f'- dig {domain}', file=sys.stderr)
+    result = ctx.run(f'dig {domain}', hide=True)
+    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
+    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/dig')
 
-    @colorize(GREEN, RED)
-    def print_stdout(self, stdout, verbose):
-        '''
-        print_stdout: colorized function to print stdout
-        '''
-        if stdout and verbose:
-            print(stdout)
+@task(name='curl', pre=[task_setup])
+def task_curl(ctx, domain, workdir=WORKDIR):
+    '''run curl on domain'''
+    print(f'- curl {domain}', file=sys.stderr)
+    result = ctx.run(f'curl -L https://{domain}', hide=True)
+    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
+    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/curl')
 
-    @colorize(GREEN, RED)
-    def print_stderr(self, stderr, verbose):
-        '''
-        print_stderr: colorized function to print stderr
-        '''
-        if stderr and verbose:
-            print(stderr, file=sys.stderr)
+@task(name='302', pre=[task_setup])
+def task_302(ctx, domain, workdir=WORKDIR):
+    '''follow redirects on domain'''
+    print(f'- 302 {domain}', file=sys.stderr)
+    url_effective = '%{url_effective}'
+    result = ctx.run(f"curl -sLD - https://{domain} -o /dev/null -w '{url_effective}'", hide=True)
+    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
+    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/302')
 
-    def do_list(self, parser=None, patterns=None, **kwargs):
-        '''
-        do_list: list all of the domains matching the patterns
-        '''
-        if parser:
-            parser.add_argument(
-                'patterns',
-                metavar='PATTERNS',
-                nargs='+',
-                help='one or more domain patterns')
-        if not patterns:
-            patterns = ['*']
+@task(name='hdrs', pre=[task_setup])
+def task_hdrs(ctx, domain, workdir=WORKDIR):
+    '''grab headers from curl'''
+    print(f'- hdrs {domain}', file=sys.stderr)
+    result = ctx.run(f'curl -IL https://{domain}', hide=True)
+    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
+    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/hdrs')
 
-    def do_test(self, parser=None, patterns=None, **kwargs):
-        '''
-        do_test: run tests against domains matching the patterns
-        '''
-        if not patterns:
-            patterns = ['*']
-        if parser:
-            parser.add_argument(
-                'patterns',
-                metavar='PATTERNS',
-                nargs='+',
-                help='one or more domain patterns')
+@task(name='ssl', pre=[task_setup])
+def task_ssl(ctx, domain, workdir=WORKDIR, port=443, openssl_args='-noout -text'):
+    '''get ssl cert info via openssl'''
+    print(f'- ssl {domain}', file=sys.stderr)
+    cmd = f'echo -n | openssl s_client -connect {domain}:{port} -servername {domain} 2> /dev/null | openssl x509 {openssl_args}'
+    result = ctx.run(cmd, hide=True)
+    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
+    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/ssl')
+
+def task_output(ctx, workdir=WORKDIR, output=default_output()):
+    '''output desc'''
+    print(f'- output', file=sys.stderr)
+    pairs = [
+        (os.path.basename(root), file)
+        for root, dirs, files in os.walk(workdir) if files
+        for file in files
+    ]
+    result= {}
+    for domain, task in pairs:
+        chunk = result.get(domain, {})
+        chunk[task] = open(f'{workdir}/{domain}/{task}').read().strip()
+        result[domain] = chunk
+    output_print(result, output)
+
+def generate_tasks(output, tasks, domains):
+    ns = Collection('tasks')
+    ns.add_task(task_dig)
+    ns.add_task(task_host)
+    ns.add_task(task_curl)
+    ns.add_task(task_302)
+    ns.add_task(task_hdrs)
+    ns.add_task(task_ssl)
+    pre = [call(globals()[f'task_{task}'], domain) for task, domain in product(tasks, domains)]
+    ns.add_task(Task(task_output, name='output', pre=pre, default=True))
+    return ns
+
+@click.command()
+@click.option('-o', '--output', type=click.Choice(OUTPUT), default=default_output(), help='select output')
+@click.option('-t', '--tasks', type=click.Choice(TASKS), multiple=True, help='select tasks')
+@click.argument('patterns', nargs=-1)
+def cli(output, tasks, patterns):
+    patterns = patterns or ('*',)
+    ns = generate_tasks(output, tasks or TASKS, fuzzy(CFG.domains).include(*patterns))
+    program = Program(namespace=ns, version='0.0.1')
+    exitcode = program.run([sys.argv[0], 'output', '--output', output])
 
 if __name__ == '__main__':
-    mozmap = MozMap()
-    mozmap.execute(sys.argv[1:])
-
+    cli()
