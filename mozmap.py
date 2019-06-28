@@ -25,6 +25,7 @@ TASKS = (
     '302',
     'hdrs',
     'ssl',
+    'whois',
 )
 
 OUTPUT = [
@@ -61,7 +62,7 @@ def task_setup(ctx, workdir=WORKDIR):
 def task_host(ctx, domain, workdir=WORKDIR):
     '''run host on domain'''
     print(f'- host {domain}', file=sys.stderr)
-    result = ctx.run(f'host {domain}', hide=True)
+    result = ctx.run(f'host {domain}', hide=True, warn=True)
     os.makedirs(f'{workdir}/{domain}', exist_ok=True)
     ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/host')
 
@@ -69,7 +70,7 @@ def task_host(ctx, domain, workdir=WORKDIR):
 def task_dig(ctx, domain, workdir=WORKDIR):
     '''run dig on domain'''
     print(f'- dig {domain}', file=sys.stderr)
-    result = ctx.run(f'dig {domain}', hide=True)
+    result = ctx.run(f'dig {domain}', hide=True, warn=True)
     os.makedirs(f'{workdir}/{domain}', exist_ok=True)
     ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/dig')
 
@@ -77,7 +78,7 @@ def task_dig(ctx, domain, workdir=WORKDIR):
 def task_curl(ctx, domain, workdir=WORKDIR):
     '''run curl on domain'''
     print(f'- curl {domain}', file=sys.stderr)
-    result = ctx.run(f'curl -L https://{domain}', hide=True)
+    result = ctx.run(f'curl -L https://{domain}', hide=True, warn=True)
     os.makedirs(f'{workdir}/{domain}', exist_ok=True)
     ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/curl')
 
@@ -86,7 +87,7 @@ def task_302(ctx, domain, workdir=WORKDIR):
     '''follow redirects on domain'''
     print(f'- 302 {domain}', file=sys.stderr)
     url_effective = '%{url_effective}'
-    result = ctx.run(f"curl -sLD - https://{domain} -o /dev/null -w '{url_effective}'", hide=True)
+    result = ctx.run(f"curl -sLD - https://{domain} -o /dev/null -w '{url_effective}'", hide=True, warn=True)
     os.makedirs(f'{workdir}/{domain}', exist_ok=True)
     ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/302')
 
@@ -94,7 +95,7 @@ def task_302(ctx, domain, workdir=WORKDIR):
 def task_hdrs(ctx, domain, workdir=WORKDIR):
     '''grab headers from curl'''
     print(f'- hdrs {domain}', file=sys.stderr)
-    result = ctx.run(f'curl -IL https://{domain}', hide=True)
+    result = ctx.run(f'curl -IL https://{domain}', hide=True, warn=True)
     os.makedirs(f'{workdir}/{domain}', exist_ok=True)
     ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/hdrs')
 
@@ -103,9 +104,17 @@ def task_ssl(ctx, domain, workdir=WORKDIR, port=443, openssl_args='-noout -text'
     '''get ssl cert info via openssl'''
     print(f'- ssl {domain}', file=sys.stderr)
     cmd = f'echo -n | openssl s_client -connect {domain}:{port} -servername {domain} 2> /dev/null | openssl x509 {openssl_args}'
-    result = ctx.run(cmd, hide=True)
+    result = ctx.run(cmd, hide=True, warn=True)
     os.makedirs(f'{workdir}/{domain}', exist_ok=True)
     ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/ssl')
+
+@task(name='whois', pre=[task_setup])
+def task_whois(ctx, domain, workdir=WORKDIR):
+    '''get whois info via whois cli'''
+    print(f'- whois {domain}', file=sys.stderr)
+    result = ctx.run(f'whois {domain}', hide=True, warn=True)
+    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
+    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/whois')
 
 def task_output(ctx, workdir=WORKDIR, output=default_output()):
     '''output desc'''
@@ -137,14 +146,18 @@ def generate_tasks(output, tasks, domains):
 @click.command()
 @click.option('-o', '--output', type=click.Choice(OUTPUT), default=default_output(), help='select output')
 @click.option('-t', '--tasks', type=click.Choice(TASKS), multiple=True, help='select tasks')
-@click.option('-s', '--show', is_flag=True)
+@click.option('-T', '--list-tasks', is_flag=True)
+@click.option('-D', '--list-domains', is_flag=True)
 @click.argument('patterns', nargs=-1)
-def cli(output, tasks, show, patterns):
+def cli(output, tasks, list_tasks, list_domains, patterns):
     tasks = tasks or TASKS
+    if list_tasks:
+        output_print(dict(tasks=list(tasks)), output)
+        sys.exit(0)
     patterns = patterns or ('*',)
     domains = fuzzy(CFG.domains).include(*patterns)
-    if show:
-        output_print(dict(tasks=list(tasks), domains=list(domains)), output)
+    if list_domains:
+        output_print(dict(domains=list(domains)), output)
         sys.exit(0)
     ns = generate_tasks(output, tasks, domains)
     program = Program(namespace=ns, version='0.0.1')
