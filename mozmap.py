@@ -137,10 +137,16 @@ def generate_tasks(output, tasks, domains):
 @click.command()
 @click.option('-o', '--output', type=click.Choice(OUTPUT), default=default_output(), help='select output')
 @click.option('-t', '--tasks', type=click.Choice(TASKS), multiple=True, help='select tasks')
+@click.option('-s', '--show', is_flag=True)
 @click.argument('patterns', nargs=-1)
-def cli(output, tasks, patterns):
+def cli(output, tasks, show, patterns):
+    tasks = tasks or TASKS
     patterns = patterns or ('*',)
-    ns = generate_tasks(output, tasks or TASKS, fuzzy(CFG.domains).include(*patterns))
+    domains = fuzzy(CFG.domains).include(*patterns)
+    if show:
+        output_print(dict(tasks=list(tasks), domains=list(domains)), output)
+        sys.exit(0)
+    ns = generate_tasks(output, tasks, domains)
     program = Program(namespace=ns, version='0.0.1')
     exitcode = program.run([sys.argv[0], 'output', '--output', output])
 
