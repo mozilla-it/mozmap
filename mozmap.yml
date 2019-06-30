@@ -1,11 +1,5 @@
 version: v1
 domains:
-#  - firefox.com
-#  - mozilla.org
-#  - sso.mozilla.com
-#  - pto.mozilla.org
-#  - dev.fxa.mozilla-subhub.app
-#  - newbie.mozilla-slack.app
   - 10mbetterfutures.com
   - 10mbetterfutures.org
   - 123done.org
@@ -41,11 +35,11 @@ domains:
   - boot2gecko.org
   - brendaneich.com
   - brendaneich.org
+  - browseagainstthemachine.com
   - browse-different.com
   - browse-faster.com
   - browse-freely.com
   - browse-privately.com
-  - browseagainstthemachine.com
   - browsercompat.com
   - browsercompat.org
   - browserid.org
@@ -60,12 +54,12 @@ domains:
   - campfirefox.de
   - ccadb.org
   - changecopyright.org
-  - chi-sol.org
   - chicagosummeroflearning.com
   - chicagosummeroflearning.net
   - chicagosummeroflearning.org
-  - choose-firefox.com
+  - chi-sol.org
   - choose.eu
+  - choose-firefox.com
   - choosefirefox.org
   - chooseindependent.org
   - cleopatra.io
@@ -91,8 +85,8 @@ domains:
   - detodosparatodos.com
   - detodosparatodos.net
   - detodosparatodos.org
-  - dev.mo
   - developerchallenges.org
+  - dev.mo
   - devmo.org
   - devtoolschallenger.com
   - dfirefox.de
@@ -123,13 +117,13 @@ domains:
   - ecmascript.org
   - emozilla.com
   - equal-rating.com
-  - equal-rating.org
-  - equal-ratinginnovationchallenge.com
   - equalrating.com
-  - equalrating.org
+  - equal-ratinginnovationchallenge.com
   - equalratinginnovationchallenge.com
   - equalratinginnovationchallenge.org
   - equalratinginnovationprize.com
+  - equal-rating.org
+  - equalrating.org
   - equalratingprize.com
   - es-lang.org
   - etherpad-allizom.org
@@ -137,19 +131,19 @@ domains:
   - everything.me
   - experiencethearch.com
   - explorecreateshare.org
-  - extend-the-web.com
-  - extend-the-web.info
-  - extend-the-web.jp
-  - extend-the-web.net
-  - extend-the-web.org
+  - extendfirefox3.com
   - extendfirefox.com
   - extendfirefox.net
   - extendfirefox.org
-  - extendfirefox3.com
+  - extend-the-web.com
   - extendtheweb.com
+  - extend-the-web.info
   - extendtheweb.info
+  - extend-the-web.jp
   - extendtheweb.jp
+  - extend-the-web.net
   - extendtheweb.net
+  - extend-the-web.org
   - extendtheweb.org
   - extendthunderbird.com
   - extensionschallenge.com
@@ -169,197 +163,182 @@ domains:
   - fightagainstboredom.com
   - fightagainstboredom.org
   - fiirefox.de
-  - fire-fox.biz
-  - fire-fox.com
-  - fire-fox.info
-  - fire-fox.us
   - firebuglite.com
   - firebuglite.org
   - fireffox.de
   - firefo.de
   - firefoox.de
-  - firefox-academic-center.com
-  - firefox-academic-center.org
-  - firefox-academic-centers.com
-  - firefox-academic-centers.org
-  - firefox-browse.de
-  - firefox-browser.at
-  - firefox-browser.be
-  - firefox-browser.de
-  - firefox-download.de
-  - firefox-downloaden.de
-  - firefox-downloadportal.de
-  - firefox-erweiterungen.de
-  - firefox-hacks.de
-  - firefox-internet-browser.at
-  - firefox-jetzt.de
-  - firefox-kommt.de
-  - firefox-mozilla.com
-  - firefox-mozilla.eu
-  - firefox-mozilla.lol
-  - firefox-mozilla.nl
-  - firefox-os.de
-  - firefox-os.net
-  - firefox-os.org
-  - firefox-portal.de
-  - firefox-update.com
-  - firefox-update.net
-  - firefox-update.org
-  - firefox-updater.com
-  - firefox.al
-  - firefox.app
-  - firefox.asia
-  - firefox.be
-  - firefox.cn.com
-  - firefox.co.il
-  - firefox.co.in
-  - firefox.com
-  - firefox.com.br
-  - firefox.com.hk
-  - firefox.com.pt
-  - firefox.com.ru
-  - firefox.de.com
-  - firefox.dev
-  - firefox.donuts-block
-  - firefox.eu.com
-  - firefox.game
-  - firefox.gmbh
-  - firefox.hk
-  - firefox.hu
-  - firefox.id
-  - firefox.ie
-  - firefox.in
-  - firefox.jpn.com
-  - firefox.kr.com
-  - firefox.lc
-  - firefox.lol
-  - firefox.lt
-  - firefox.me
-  - firefox.me
-  - firefox.mom
-  - firefox.ms
-  - firefox.my
-  - firefox.name
-  - firefox.no.com
-  - firefox.org.il
-  - firefox.org.in
-  - firefox.org.uk
-  - firefox.pl
-  - firefox.pt
-  - firefox.pw
-  - firefox.qa
-  - firefox.ru.com
-  - firefox.se.com
-  - firefox.sk
-  - firefox.sk
-  - firefox.us.com
-  - firefox.web.com
-  - firefox.xxx-block
-  - firefox1.de
   - firefox10.org
-  - firefox2.de
+  - firefox1.de
   - firefox2017freedownload.com
+  - firefox2.de
   - firefox2download.de
   - firefox2party.com
   - firefox3.de
   - firefox3party.com
-  - firefox4.de
-  - firefox4.org
   - firefox4all.com
   - firefox4all.org
+  - firefox4.de
+  - firefox4.org
   - firefox9.org
+  - firefox-academic-center.com
   - firefoxacademiccenter.com
+  - firefox-academic-center.org
   - firefoxacademiccenter.org
+  - firefox-academic-centers.com
   - firefoxacademiccenters.com
+  - firefox-academic-centers.org
   - firefoxacademiccenters.org
   - firefoxaddons.com
+  - firefox.al
+  - firefox.app
+  - firefox.asia
+  - firefox.be
+  - fire-fox.biz
   - firefoxbrand.com
-  - firefoxbrand.org
   - firefoxbranding.com
   - firefoxbranding.org
+  - firefoxbrand.org
+  - firefox-browse.de
+  - firefox-browser.at
+  - firefox-browser.be
   - firefoxbrowser.com
+  - firefox-browser.de
   - firefoxbrowser.de
   - firefoxbrowser.org
-  - firefoxc.de
   - firefoxccstudio.org
+  - firefoxc.de
+  - firefox.cn.com
   - firefoxco.com
-  - firefoxco.org
+  - firefox.co.il
+  - firefox.co.in
+  - fire-fox.com
+  - firefox.com
+  - firefox.com.hk
   - firefoxcompany.com
   - firefoxcompany.net
   - firefoxcompany.org
+  - firefox.com.pt
+  - firefox.com.ru
+  - firefoxco.org
   - firefoxcorp.net
-  - firefoxcorp.org
   - firefoxcorporation.com
   - firefoxcorporation.net
   - firefoxcorporation.org
-  - firefoxcup.com
+  - firefoxcorp.org
   - firefoxcup2010.com
+  - firefoxcup.com
   - firefoxcustomersupport.com
-  - firefoxd.de
   - firefoxdata.com
   - firefoxday.net
   - firefoxday.org
+  - firefoxd.de
+  - firefox.de.com
+  - firefox.dev
+  - firefox.donuts-block
   - firefoxdownload.com
+  - firefox-download.de
+  - firefox-downloaden.de
+  - firefox-downloadportal.de
   - firefoxdownload.us
+  - firefox-erweiterungen.de
+  - firefox.eu.com
   - firefoxfestival.com
   - firefoxfestival.org
   - firefoxflicks.asia
   - firefoxflicks.com
   - firefoxflicks.es
   - firefoxflicks.org
-  - firefoxformobile.com
-  - firefoxformobile.com
+  - firefox.game
   - firefoxgarden.com
   - firefoxgarden.org
   - firefoxgear.com
+  - firefox.gmbh
+  - firefox-hacks.de
   - firefoxhello.com
+  - firefox.hk
+  - firefox.hu
   - firefoxhungary.hu
+  - firefox.id
+  - firefox.ie
   - firefoxik.ru
-  - firefoxlive.com
-  - firefoxlive.com
-  - firefoxlive.info
-  - firefoxlive.info
-  - firefoxlive.net
-  - firefoxlive.net
-  - firefoxlive.org
-  - firefoxlive.org
+  - firefox.in
+  - fire-fox.info
+  - firefox-internet-browser.at
+  - firefox-jetzt.de
+  - firefox.jpn.com
+  - firefox-kommt.de
+  - firefox.kr.com
+  - firefox.lc
+  - firefox.lol
+  - firefox.lt
   - firefoxmarkeplace.org
   - firefoxmarketplace.mobi
   - firefoxmarketplace.org
   - firefoxmetrics.com
+  - firefox.mom
+  - firefox-mozilla.com
   - firefoxmozilla.de
+  - firefox-mozilla.eu
+  - firefox-mozilla.lol
   - firefoxmozilla.lol
   - firefoxmozilla.net
+  - firefox-mozilla.nl
+  - firefox.ms
+  - firefox.my
+  - firefox.name
+  - firefox.no.com
   - firefoxnote.jp
   - firefoxofflineinstaller.com
+  - firefox.org.il
+  - firefox.org.in
+  - firefox.org.uk
   - firefoxos.al
-  - firefoxos.at
-  - firefoxos.com
-  - firefoxos.de
-  - firefoxos.guru
-  - firefoxos.us
   - firefoxosappchallenge.com
   - firefoxosappchallenge.org
   - firefoxosappschallenge.com
   - firefoxosappschallenge.org
+  - firefoxos.at
   - firefoxosbrand.com
-  - firefoxosbrand.org
   - firefoxosbranding.com
   - firefoxosbranding.org
+  - firefoxosbrand.org
+  - firefoxos.com
+  - firefox-os.de
+  - firefoxos.de
+  - firefoxos.guru
   - firefoxoshungary.hu
   - firefoxosmaster.com
+  - firefox-os.net
+  - firefox-os.org
+  - firefoxos.us
   - firefoxparty.com
+  - firefox.pl
+  - firefox-portal.de
+  - firefox.pt
+  - firefox.pw
+  - firefox.qa
   - firefoxquantum.com
+  - firefox.ru.com
   - firefoxschool.com
   - firefoxschool.net
   - firefoxschool.org
+  - firefox.se.com
   - firefoxsoftware.com
   - firefoxstore.org
   - firefoxtweetmachine.com
+  - firefox-update.com
+  - firefox-update.net
   - firefoxupdate.net
+  - firefox-update.org
   - firefoxupdate.org
+  - firefox-updater.com
+  - fire-fox.us
+  - firefox.us.com
   - firefoxusercontent.com
   - firefoxvictory.com
+  - firefox.web.com
+  - firefox.xxx-block
   - firefoz.de
   - firerfox.de
   - firfox.de
@@ -375,26 +354,21 @@ domains:
   - foxkeh.org
   - foxyeah.com
   - foxyeah.org
-  - free-downloadmozila.com
-  - free-downloadmozila.com
   - frefox.de
   - funnyfox.net
   - funnyfox.org
-  - fx-trans.net
   - fxaddons.com
   - fxaddons.net
   - fxaddons.org
-  - fxos-persona.org
   - fxosapps.org
+  - fxos-persona.org
+  - fx-trans.net
   - g20openletter.org
   - geckoview.dev
   - genopen.org
-  - get-firefox.org
   - getfenec.com
   - getfenec.net
   - getfenec.org
-  - getfennec.com
-  - getfennec.com
   - getfennec.net
   - getfennec.org
   - getfirebug.com
@@ -402,13 +376,12 @@ domains:
   - getfirebuglite.org
   - getfirefox.asia
   - getfirefox.at
-  - getfirefox.co.uk
   - getfirefox.com
+  - getfirefox.co.uk
   - getfirefox.de
   - getfirefox.jp
-  - getfirefox.me
-  - getfirefox.me
   - getfirefox.net
+  - get-firefox.org
   - getfirefox.org
   - getfirfox.com
   - getopenvideo.com
@@ -424,13 +397,11 @@ domains:
   - gv.dev
   - hackasaurus.org
   - helpamofoout.org
-  - hive.nyc
   - hiveberlin.org
   - hivecha.org
   - hivechicago.com
   - hivechicago.org
   - hivekc.org
-  - hivelearning.org
   - hivelearningchicago.com
   - hivelearningchicago.org
   - hivelearningnetwork.com
@@ -438,6 +409,8 @@ domains:
   - hivelearningnetworks.org
   - hivelearningnyc.com
   - hivelearningnyc.org
+  - hivelearning.org
+  - hive.nyc
   - hivenyc.org
   - hivetoronto.org
   - hivevan.org
@@ -466,13 +439,13 @@ domains:
   - livetitles.com
   - livingdocs.org
   - lizardwrangler.com
-  - magicink.org
   - magicinkacademy.com
   - magicinkacademy.org
   - magicinkclub.com
   - magicinkclub.org
   - magicinkguild.com
   - magicinkguild.org
+  - magicink.org
   - makeopenvideo.com
   - makeopenvideo.org
   - maker.ly
@@ -503,8 +476,8 @@ domains:
   - mocotoolsprod.net
   - mocotoolsstaging.net
   - modzilla-firefox.de
-  - modzilla.fr
   - modzillafirefox.de
+  - modzilla.fr
   - mofo.build
   - mofodev.net
   - mofopriv.net
@@ -521,16 +494,15 @@ domains:
   - motizilla.com
   - motzila.de
   - moxilla.de
-  - moz.am
-  - moz.bg
-  - moz.camp
-  - moz.tools
   - mozaddons.com
   - mozaddons.net
   - mozaddons.org
+  - moz.am
   - mozapp.me
   - mozarilla-firefox.de
   - mozaws.net
+  - moz.bg
+  - moz.camp
   - mozcenter.com
   - mozcenter.net
   - mozcenter.org
@@ -538,17 +510,17 @@ domains:
   - mozcentral.net
   - mozcentral.org
   - mozco.com
-  - mozco.net
-  - mozco.org
   - mozcompany.com
   - mozcompany.net
   - mozcompany.org
+  - mozco.net
+  - mozco.org
   - mozcorp.com
   - mozcorp.net
-  - mozcorp.org
   - mozcorporation.com
   - mozcorporation.net
   - mozcorporation.org
+  - mozcorp.org
   - mozdatacollective.com
   - mozdc.com
   - mozdc.net
@@ -569,8 +541,8 @@ domains:
   - mozdevnet.net
   - mozdevnet.org
   - mozellia.com
-  - mozfest.org
   - mozfestea.org
+  - mozfest.org
   - moziila.de
   - moziilla.de
   - mozila.de
@@ -578,165 +550,31 @@ domains:
   - mozila.fr
   - mozila.org
   - mozilathunderbird.com
-  - mozill.com
-  - mozill.de
+  - mozilla.コム
+  - mozilla24.com
+  - mozilla24.jp
+  - mozilla2.de
+  - mozilla64bit.com
+  - mozillaa.de
   - mozilla-advocacy.org
+  - mozilla.al
   - mozilla-albania.org
   - mozilla-antarctica.org
   - mozilla-antartica.org
-  - mozilla-auth.services
-  - mozilla-botswana.org
-  - mozilla-browser.de
-  - mozilla-campaigns.org
-  - mozilla-community.org
-  - mozilla-costarica.org
-  - mozilla-cotedivoire.org
-  - mozilla-danmark.dk
-  - mozilla-esperanto.org
-  - mozilla-europa.de
-  - mozilla-europe.com
-  - mozilla-europe.de
-  - mozilla-europe.me
-  - mozilla-europe.org
-  - mozilla-factory.org
-  - mozilla-fierfox.de
-  - mozilla-firefox.cnkeyword
-  - mozilla-firefox.lol
-  - mozilla-firefox.nl
-  - mozilla-firfox.de
-  - mozilla-france.com
-  - mozilla-france.org
-  - mozilla-greece.org
-  - mozilla-hispano.com
-  - mozilla-hispano.org
-  - mozilla-japan.jp
-  - mozilla-japan.org
-  - mozilla-jordan.org
-  - mozilla-jp.me
-  - mozilla-mauritius.org
-  - mozilla-mexico.com
-  - mozilla-mexico.net
-  - mozilla-mexico.org
-  - mozilla-nepal.org
-  - mozilla-nigeria.org
-  - mozilla-nl.org
-  - mozilla-org.de
-  - mozilla-pakistan.org
-  - mozilla-podcasts.org
-  - mozilla-portal.de
-  - mozilla-portal.org
-  - mozilla-private.report
-  - mozilla-projekt.de
-  - mozilla-radio.de
-  - mozilla-releng.net
-  - mozilla-reps.org
-  - mozilla-russia.org
-  - mozilla-slack.app
-  - mozilla-slack.bot
-  - mozilla-srbija.org
-  - mozilla-subhub.app
-  - mozilla-thunderbird.cnkeyword
-  - mozilla-uganda.org
-  - mozilla-uk.org
-  - mozilla-update.com
-  - mozilla-update.net
-  - mozilla-update.org
-  - mozilla-uruguay.org
-  - mozilla-world.com
-  - mozilla-world.net
-  - mozilla-world.org
-  - mozilla-zimbabwe.org
-  - mozilla.al
   - mozilla.app
   - mozilla.asia
   - mozilla.at
+  - mozilla-auth.services
+  - mozillabd.org
   - mozilla.berlin
   - mozilla.bg
-  - mozilla.ca
-  - mozilla.ch
-  - mozilla.ci
-  - mozilla.club
-  - mozilla.cnwirelesskeyword
-  - mozilla.cnwirelesskeyword
-  - mozilla.co.il
-  - mozilla.co.in
-  - mozilla.com
-  - mozilla.com.br
-  - mozilla.com.eg
-  - mozilla.com.hk
-  - mozilla.com.ru
-  - mozilla.com.sg
-  - mozilla.community
-  - mozilla.cz
-  - mozilla.de
-  - mozilla.design
-  - mozilla.dev
-  - mozilla.donuts-block
-  - mozilla.eu
-  - mozilla.fail
-  - mozilla.fr
-  - mozilla.frl
-  - mozilla.game
-  - mozilla.gmbh
-  - mozilla.hk
-  - mozilla.hu
-  - mozilla.id
-  - mozilla.ie
-  - mozilla.in
-  - mozilla.it
-  - mozilla.jo
-  - mozilla.jp
-  - mozilla.lc
-  - mozilla.li
-  - mozilla.lk
-  - mozilla.lol
-  - mozilla.lt
-  - mozilla.me
-  - mozilla.me
-  - mozilla.mk
-  - mozilla.mom
-  - mozilla.ms
-  - mozilla.my
-  - mozilla.net
-  - mozilla.ng
-  - mozilla.ninja
-  - mozilla.nl
-  - mozilla.om
-  - mozilla.or.jp
-  - mozilla.org
-  - mozilla.org.mx
-  - mozilla.org.np
-  - mozilla.org.uk
-  - mozilla.pe
-  - mozilla.ph
-  - mozilla.pk
-  - mozilla.press
-  - mozilla.ps
-  - mozilla.pt
-  - mozilla.qa
-  - mozilla.report
-  - mozilla.ro
-  - mozilla.rs
-  - mozilla.se
-  - mozilla.services
-  - mozilla.sg
-  - mozilla.tv
-  - mozilla.uk
-  - mozilla.vn
-  - mozilla.wtf
-  - mozilla.xxx-block
-  - mozilla.xyz
-  - mozilla.コム
-  - mozilla.网址
-  - mozilla2.de
-  - mozilla24.com
-  - mozilla24.jp
-  - mozilla64bit.com
-  - mozillaa.de
-  - mozillabd.org
-  - mozillabr.org
+  - mozilla-botswana.org
   - mozillabrand.com
   - mozillabrand.org
+  - mozillabr.org
+  - mozilla-browser.de
+  - mozilla.ca
+  - mozilla-campaigns.org
   - mozillacamp.org
   - mozillacanada.org
   - mozillacenter.com
@@ -745,97 +583,157 @@ domains:
   - mozillacentral.com
   - mozillacentral.net
   - mozillacentral.org
+  - mozilla.ch
+  - mozilla.ci
   - mozillacloud.com
   - mozillacloud.org
+  - mozilla.club
   - mozillaco.com
-  - mozillaco.net
-  - mozillaco.org
+  - mozilla.co.il
+  - mozilla.co.in
   - mozillacolombia.org
+  - mozilla.com
+  - mozilla.com.br
+  - mozilla.com.eg
+  - mozilla.com.hk
+  - mozilla.community
+  - mozilla-community.org
   - mozillacompany.com
   - mozillacompany.net
   - mozillacompany.org
+  - mozilla.com.ru
+  - mozilla.com.sg
+  - mozillaco.net
   - mozillacontributors.com
+  - mozillaco.org
   - mozillacorp.com
   - mozillacorp.net
-  - mozillacorp.org
   - mozillacorporation.com
   - mozillacorporation.net
   - mozillacorporation.org
+  - mozillacorp.org
+  - mozilla-costarica.org
+  - mozilla-cotedivoire.org
   - mozillacreativecollective.com
   - mozillacreativecollective.org
   - mozillactf.org
   - mozillacup.com
+  - mozilla.cz
+  - mozilla-danmark.dk
   - mozilladanmark.dk
   - mozilladata.com
+  - mozilla.de
   - mozillademos.org
+  - mozilla.design
   - mozilladesign.org
+  - mozilla.dev
   - mozilladev.com
-  - mozilladev.net
-  - mozilladev.org
-  - mozilladeveloper.com
-  - mozilladeveloper.net
-  - mozilladeveloper.org
   - mozilladevelopercentral.com
   - mozilladevelopercentral.net
   - mozilladevelopercentral.org
+  - mozilladeveloper.com
+  - mozilladeveloper.net
+  - mozilladeveloper.org
   - mozilladevelopers.com
   - mozilladevelopers.net
   - mozilladevelopers.org
+  - mozilladev.net
+  - mozilladev.org
   - mozilladevs.com
   - mozilladevs.net
   - mozilladevs.org
+  - mozilla.donuts-block
   - mozilladownload.de
-  - mozilladrumbeat.com
-  - mozilladrumbeat.com
   - mozilladrumbeat.org
   - mozillaecuador.org
+  - mozilla-esperanto.org
+  - mozilla.eu
+  - mozilla-europa.de
+  - mozilla-europe.com
+  - mozilla-europe.de
+  - mozilla-europe.me
+  - mozilla-europe.org
   - mozillaeurope.org
+  - mozilla-factory.org
   - mozillafactory.org
+  - mozilla.fail
   - mozillaferox.com
   - mozillafestival.org
+  - mozilla-fierfox.de
   - mozillafirefox.be
   - mozillafirefox.biz
+  - mozilla-firefox.cnkeyword
   - mozillafirefox.com
   - mozillafirefox.com.br
-  - mozillafirefox.in
-  - mozillafirefox.it
-  - mozillafirefox.lol
-  - mozillafirefox.net
-  - mozillafirefox.pl
-  - mozillafirefox.us
   - mozillafirefoxdownload.de
   - mozillafirefoxdownload.net
+  - mozillafirefox.in
+  - mozillafirefox.it
+  - mozilla-firefox.lol
+  - mozillafirefox.lol
+  - mozillafirefox.net
+  - mozilla-firefox.nl
+  - mozillafirefox.pl
   - mozillafirefoxupdate.com
+  - mozillafirefox.us
   - mozillafirefoxx.com
+  - mozilla-firfox.de
   - mozillafirfox.de
   - mozillafordevelopment.org
   - mozillafoundation.com
   - mozillafoundation.net
   - mozillafoundation.org
+  - mozilla.fr
+  - mozilla-france.com
+  - mozilla-france.org
+  - mozilla.frl
+  - mozilla.game
+  - mozilla.gmbh
+  - mozilla-greece.org
+  - mozilla-hispano.com
+  - mozilla-hispano.org
   - mozillahispano.org
+  - mozilla.hk
   - mozillahonduras.org
+  - mozilla.hu
+  - mozilla.id
+  - mozilla.ie
   - mozillaignite.com
   - mozillaignite.org
+  - mozilla.in
   - mozillaindia.org
   - mozillainnovationprize.com
+  - mozilla.it
+  - mozilla-japan.jp
+  - mozilla-japan.org
+  - mozilla.jo
+  - mozilla-jordan.org
+  - mozilla.jp
+  - mozilla-jp.me
   - mozillakerala.org
   - mozillalabs.com
   - mozillalabs.net
   - mozillalabs.org
+  - mozilla.lc
+  - mozilla.li
+  - mozilla.lk
+  - mozilla.lol
+  - mozilla.lt
   - mozillamagazine.com
   - mozillamarketplace.co
   - mozillamarketplace.com
   - mozillamarketplace.info
   - mozillamarketplace.mobi
   - mozillamarketplace.net
+  - mozilla-mauritius.org
   - mozillamedia.agency
   - mozillamedia.biz
   - mozillamedia.ca
   - mozillamedia.cheap
   - mozillamedia.club
   - mozillamedia.co
-  - mozillamedia.co.uk
   - mozillamedia.com
+  - mozillamedia.co.uk
   - mozillamedia.de
   - mozillamedia.education
   - mozillamedia.email
@@ -854,8 +752,8 @@ domains:
   - mozillamedia.us
   - mozillamedia.zone
   - mozillamessaging.ch
-  - mozillamessaging.co.uk
   - mozillamessaging.com
+  - mozillamessaging.co.uk
   - mozillamessaging.cz
   - mozillamessaging.de
   - mozillamessaging.es
@@ -866,75 +764,143 @@ domains:
   - mozillamessaging.org
   - mozillamessaging.pl
   - mozillametrics.com
+  - mozilla-mexico.com
+  - mozilla-mexico.net
+  - mozilla-mexico.org
+  - mozilla.mk
+  - mozilla.mom
+  - mozilla.ms
+  - mozilla.my
   - mozillamyanmar.org
   - mozillanativo.org
+  - mozilla-nepal.org
+  - mozilla.net
+  - mozilla.ng
+  - mozilla-nigeria.org
+  - mozilla.ninja
+  - mozilla.nl
+  - mozilla-nl.org
+  - mozilla.om
   - mozillaonline.com
   - mozillaopen.design
   - mozillaopennews.com
   - mozillaopennews.org
+  - mozilla.org
+  - mozilla-org.de
+  - mozilla.org.mx
+  - mozilla.org.np
+  - mozilla.org.uk
+  - mozilla.or.jp
+  - mozilla-pakistan.org
   - mozillapaladin.com
   - mozillapaladin.org
   - mozillapanama.org
   - mozillaparty.com
+  - mozilla.pe
   - mozillapedia.com
   - mozillapedia.net
   - mozillapedia.org
+  - mozilla.ph
   - mozillaphilippines.org
+  - mozilla.pk
+  - mozilla-podcasts.org
   - mozillapopcorn.com
   - mozillapopcorn.org
+  - mozilla-portal.de
+  - mozilla-portal.org
+  - mozilla.press
+  - mozilla-private.report
   - mozillaprize.com
+  - mozilla-projekt.de
+  - mozilla.ps
+  - mozilla.pt
   - mozillapulse.org
+  - mozilla.qa
   - mozillaquebec.org
+  - mozilla-radio.de
+  - mozilla-releng.net
+  - mozilla.report
+  - mozilla-reps.org
   - mozillareps.org
-  - mozillas-firefox.de
-  - mozillas.de
+  - mozilla.ro
+  - mozilla.rs
+  - mozilla-russia.org
   - mozillascience.com
   - mozillascience.org
+  - mozillas.de
+  - mozilla.se
   - mozillaservice.com
   - mozillaservice.net
   - mozillaservice.org
+  - mozilla.services
+  - mozillas-firefox.de
+  - mozilla.sg
+  - mozilla-slack.app
+  - mozilla-slack.bot
+  - mozilla-srbija.org
   - mozillastore.com
+  - mozilla-subhub.app
   - mozillasunbird.de
   - mozillasupport.com
   - mozillathimblelivepreview.net
+  - mozilla-thunderbird.cnkeyword
   - mozillathunderbird.com
   - mozillathunderbird.net
   - mozillathunderbird.us
+  - mozilla.tv
+  - mozilla-uganda.org
+  - mozilla.uk
+  - mozilla-uk.org
+  - mozilla-update.com
+  - mozilla-update.net
   - mozillaupdate.net
+  - mozilla-update.org
   - mozillaupdate.org
+  - mozilla-uruguay.org
   - mozillauruguay.org
   - mozillausa.org
   - mozillausercontent.com
   - mozillavenezuela.org
+  - mozilla.vn
   - mozillavoices.com
   - mozillawebmaker.info
   - mozillawebmakerproxy.net
+  - mozilla-world.com
   - mozillaworld.com
+  - mozilla-world.net
   - mozillaworld.net
+  - mozilla-world.org
   - mozillaworld.org
+  - mozilla.wtf
+  - mozilla.xxx-block
+  - mozilla.xyz
+  - mozilla-zimbabwe.org
   - mozillazine.jp
-  - mozilli.com
+  - mozilla.网址
+  - mozill.com
+  - mozill.de
   - mozillian.net
   - mozillian.org
   - mozillians.com
   - mozillians.net
   - mozillians.org
+  - mozilli.com
   - mozillion.net
   - mozillion.org
   - mozillions.com
   - mozillions.net
   - mozillions.org
-  - mozillla-firefox.de
   - mozillla.de
+  - mozillla-firefox.de
   - mozilllafirefox.de
   - mozit.cloud
   - mozit.net
   - mozit.rocks
-  - mozla.de
   - mozlabs.com
   - mozlabs.jp
   - mozlabs.net
   - mozlabs.org
+  - mozla.de
   - mozops.net
   - mozplatformops.com
   - mozplay.com
@@ -943,13 +909,12 @@ domains:
   - mozqa.com
   - mozsecworld.org
   - mozspaces.org
-  - moztweet.com
-  - moztweet.com
+  - moz.tools
   - mozvr.com
-  - mozzilla-firefox.de
   - mozzilla.com
-  - mozzilla.fr
+  - mozzilla-firefox.de
   - mozzillafirefox.de
+  - mozzilla.fr
   - myfavoritebeer.org
   - mywebmaker.org
   - mzl.la
@@ -987,9 +952,9 @@ domains:
   - openwebcompatibility.org
   - openwebday.com
   - openwebday.org
-  - openwebdevice.org
   - openwebdevicecompatibility.com
   - openwebdevicecompatibility.org
+  - openwebdevice.org
   - openwebgame.com
   - openwebgames.com
   - openwebgames.org
@@ -1010,11 +975,11 @@ domains:
   - pdfjs.net
   - pdfjs.org
   - people-mozilla.org
-  - perf-html.io
   - perfht.ml
-  - persona.org
+  - perf-html.io
   - personaid.net
   - personaid.org
+  - persona.org
   - personas.id
   - personatest.org
   - personatestuser.org
@@ -1024,8 +989,6 @@ domains:
   - playfirefox.net
   - playfirefox.org
   - pm0.io
-  - pocket.app
-  - pocket.app
   - pocket.com
   - pocket.dev
   - popcornjs.com
@@ -1050,11 +1013,11 @@ domains:
   - reformcopyright.org
   - refoxccstudio.org
   - rekambew.org
-  - repo-the-web.org
   - repotheweb.com
+  - repo-the-web.org
   - repotheweb.org
-  - responsiblecs.org
   - responsiblecschallenge.org
+  - responsiblecs.org
   - restmail.net
   - rfirefox.de
   - rnozilla.com
@@ -1063,17 +1026,15 @@ domains:
   - rockyourfirefox.com
   - rustbr.org
   - school-of-firefox.com
-  - school-of-firefox.net
-  - school-of-firefox.org
   - schooloffirefox.com
+  - school-of-firefox.net
   - schooloffirefox.net
+  - school-of-firefox.org
   - schooloffirefox.org
   - schoolofwebcraft.org
-  - seamonkey-project.org
   - seamonkey.de
   - seamonkey.eu
-  - seamonkey.hu
-  - seamonkey.hu
+  - seamonkey-project.org
   - seamonkeyproject.org
   - secureopensource.org
   - sensorweb.io
@@ -1087,8 +1048,6 @@ domains:
   - smartdogz.org
   - sol-chi.com
   - sol-chi.org
-  - spreadfennec.com
-  - spreadfennec.com
   - spreadfirefox.asia
   - spreadfirefox.com
   - spreadfirefox.es
@@ -1115,9 +1074,9 @@ domains:
   - switchtothunderbird.com
   - taskcluster-artifacts.net
   - taskcluster-dev.net
+  - taskcluster.net
   - taskcluster-staging.net
   - taskcluster-worker.net
-  - taskcluster.net
   - tasks.build
   - tercotua.org
   - testswarm.com
@@ -1129,23 +1088,20 @@ domains:
   - thefirefoxcup.com
   - thefirefoxgarden.com
   - thefirefoxgarden.org
-  - theglassroom.org
   - theglassroomlondon.org
   - theglassroomnyc.org
+  - theglassroom.org
   - themozillian.com
   - thenextbillion.org
   - theopenstandard.net
   - theopenstandard.org
   - therepoweb.org
   - thewhiteroomnyc.org
-  - thimble.codes
   - thimblecode.org
+  - thimble.codes
   - thimbleproject.org
   - thimbleprojects.org
   - thimbletest.org
-  - thunderbird-update.com
-  - thunderbird-update.net
-  - thunderbird-update.org
   - thunderbird.asia
   - thunderbird.cnkeyword
   - thunderbird.com.br
@@ -1157,10 +1113,13 @@ domains:
   - thunderbird.pt
   - thunderbird.qa
   - thunderbird.sk
-  - thunderbird.xxx-block
+  - thunderbird-update.com
   - thunderbirdupdate.com
+  - thunderbird-update.net
   - thunderbirdupdate.net
+  - thunderbird-update.org
   - thunderbirdupdate.org
+  - thunderbird.xxx-block
   - tinderbox.org
   - tizom.cloud
   - tizom.net
@@ -1170,8 +1129,6 @@ domains:
   - trackingprotection.info
   - treeaj.com
   - tweetzilla.org
-  - twizzilla.com
-  - twizzilla.com
   - typeoutloud.org
   - ukfirefox.com
   - update-firefox.com
@@ -1200,11 +1157,11 @@ domains:
   - webmadecontent.org
   - webmademovies.com
   - webmademovies.org
-  - webmak.es
+  - webmakerconnect.org
   - webmaker.ninja
   - webmaker.org
-  - webmakerconnect.org
   - webmakerprototypes.org
+  - webmak.es
   - webofwonder.org
   - webowonder.com
   - webowonder.org
