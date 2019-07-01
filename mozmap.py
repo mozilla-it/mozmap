@@ -3,6 +3,7 @@
 
 import os
 import sys
+import doit
 import json
 import click
 import shutil
@@ -11,22 +12,18 @@ import requests
 from ruamel import yaml
 from itertools import product
 from attrdict import AttrDict
-from invoke import call, task, Task, Program, Collection
+
+from doit.cmd_base import ModuleTaskLoader
+from doit.doit_cmd import DoitMain
 
 from leatherman.fuzzy import fuzzy
+from leatherman.yaml import yaml_print, yaml_format
 from leatherman.dbg import dbg
-from leatherman.yaml import yaml_print
 
-
-TASKS = (
-    'dig',
-    'host',
-    'curl',
-    '302',
-    'hdrs',
-    'ssl',
-    'whois',
-)
+DOIT_CONFIG = {
+    #'verbosity': 2,
+    'continue': True,
+}
 
 OUTPUT = [
     'json',
@@ -43,6 +40,9 @@ def config(url=URL):
 
 CFG = config()
 
+def get_domains(patterns):
+    return fuzzy(CFG.domains).include(*patterns).defuzz() or patterns
+
 def default_output():
     return OUTPUT[int(sys.stdout.isatty())]
 
@@ -52,116 +52,133 @@ def output_print(obj, output):
     elif output == 'json':
         print(json.dumps(obj, indent=2))
 
-@task(name='setup')
-def task_setup(ctx, workdir=WORKDIR):
-    print('- setup', file=sys.stderr)
-    shutil.rmtree(workdir, ignore_errors=True)
-    os.makedirs(workdir)
+def default_processes():
+    return str(int(1.5 * os.cpu_count()))
 
-@task(name='host', pre=[task_setup])
-def task_host(ctx, domain, workdir=WORKDIR):
-    '''run host on domain'''
-    print(f'- host {domain}', file=sys.stderr)
-    result = ctx.run(f'host {domain}', hide=True, warn=True)
-    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
-    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/host')
-
-@task(name='dig', pre=[task_setup])
-def task_dig(ctx, domain, workdir=WORKDIR):
-    '''run dig on domain'''
-    print(f'- dig {domain}', file=sys.stderr)
-    result = ctx.run(f'dig {domain}', hide=True, warn=True)
-    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
-    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/dig')
-
-@task(name='curl', pre=[task_setup])
-def task_curl(ctx, domain, workdir=WORKDIR):
-    '''run curl on domain'''
-    print(f'- curl {domain}', file=sys.stderr)
-    result = ctx.run(f'curl -L https://{domain}', hide=True, warn=True)
-    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
-    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/curl')
-
-@task(name='302', pre=[task_setup])
-def task_302(ctx, domain, workdir=WORKDIR):
-    '''follow redirects on domain'''
-    print(f'- 302 {domain}', file=sys.stderr)
-    url_effective = '%{url_effective}'
-    result = ctx.run(f"curl -sLD - https://{domain} -o /dev/null -w '{url_effective}'", hide=True, warn=True)
-    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
-    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/302')
-
-@task(name='hdrs', pre=[task_setup])
-def task_hdrs(ctx, domain, workdir=WORKDIR):
-    '''grab headers from curl'''
-    print(f'- hdrs {domain}', file=sys.stderr)
-    result = ctx.run(f'curl -IL https://{domain}', hide=True, warn=True)
-    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
-    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/hdrs')
-
-@task(name='ssl', pre=[task_setup])
-def task_ssl(ctx, domain, workdir=WORKDIR, port=443, openssl_args='-noout -text'):
-    '''get ssl cert info via openssl'''
-    print(f'- ssl {domain}', file=sys.stderr)
-    cmd = f'echo -n | openssl s_client -connect {domain}:{port} -servername {domain} 2> /dev/null | openssl x509 {openssl_args}'
-    result = ctx.run(cmd, hide=True, warn=True)
-    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
-    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/ssl')
-
-@task(name='whois', pre=[task_setup])
-def task_whois(ctx, domain, workdir=WORKDIR):
-    '''get whois info via whois cli'''
-    print(f'- whois {domain}', file=sys.stderr)
-    result = ctx.run(f'whois {domain}', hide=True, warn=True)
-    os.makedirs(f'{workdir}/{domain}', exist_ok=True)
-    ctx.run(f'echo "{result.stdout}" > {workdir}/{domain}/whois')
-
-def task_output(ctx, workdir=WORKDIR, output=default_output()):
-    '''output desc'''
-    print(f'- output', file=sys.stderr)
-    pairs = [
-        (os.path.basename(root), file)
-        for root, dirs, files in os.walk(workdir) if files
-        for file in files
-    ]
-    result= {}
-    for domain, task in pairs:
-        chunk = result.get(domain, {})
-        chunk[task] = open(f'{workdir}/{domain}/{task}').read().strip()
-        result[domain] = chunk
-    output_print(result, output)
-
-def generate_tasks(output, tasks, domains):
-    ns = Collection('tasks')
-    ns.add_task(task_dig)
-    ns.add_task(task_host)
-    ns.add_task(task_curl)
-    ns.add_task(task_302)
-    ns.add_task(task_hdrs)
-    ns.add_task(task_ssl)
-    pre = [call(globals()[f'task_{task}'], domain) for task, domain in product(tasks, domains)]
-    ns.add_task(Task(task_output, name='output', pre=pre, default=True))
-    return ns
-
-@click.command()
-@click.option('-o', '--output', type=click.Choice(OUTPUT), default=default_output(), help='select output')
-@click.option('-t', '--tasks', type=click.Choice(TASKS), multiple=True, help='select tasks')
-@click.option('-T', '--list-tasks', is_flag=True)
-@click.option('-D', '--list-domains', is_flag=True)
-@click.argument('patterns', nargs=-1)
-def cli(output, tasks, list_tasks, list_domains, patterns):
-    tasks = tasks or TASKS
-    if list_tasks:
-        output_print(dict(tasks=list(tasks)), output)
+@click.group(chain=True, invoke_without_command=True)
+@click.option('-v', '--version', is_flag=True, help='print version')
+@click.option('-w', '--workdir', metavar='PATH', default=WORKDIR, help='set workdir')
+@click.option('-p', '--patterns', metavar='PN', default=('*'), multiple=True, help='patterns to match domains')
+@click.option('-n', '--num-processes', metavar='INT', default=default_processes(), help='num processes')
+@click.pass_context
+def cli(ctx, version, workdir, patterns, num_processes):
+    if version:
+        print('version: 0.0.1')
+    ctx.ensure_object(AttrDict)
+    ctx.obj.workdir = workdir
+    ctx.obj.patterns = patterns
+    if version:
+        print('print version')
         sys.exit(0)
-    patterns = patterns or ('*',)
-    domains = fuzzy(CFG.domains).include(*patterns)
-    if list_domains:
-        output_print(dict(domains=list(domains)), output)
-        sys.exit(0)
-    ns = generate_tasks(output, tasks, domains)
-    program = Program(namespace=ns, version='0.0.1')
-    exitcode = program.run([sys.argv[0], 'output', '--output', output])
+
+
+def load_tasks(tasks):
+    task_names = []
+    for task in tasks:
+        task_names += [task.__name__[len('task_'):]]
+        globals()[task.__name__] = task
+    return task_names
+
+@cli.resultcallback()
+def process_pipeline(tasks, *args, version=None, workdir=None, patterns=None, num_processes=None, **kwargs):
+    doit_args = ['-n', num_processes, '--continue']
+    task_names = load_tasks(tasks)
+    if not task_names:
+        domains = get_domains(patterns)
+        task_names = load_tasks([
+            gen_task(workdir, domains) for gen_task in (gen_dig, gen_host, gen_ssl)
+        ])
+    def task_setup():
+        return {
+            'actions': [
+               f'rm -rf {workdir}',
+            ],
+        }
+    globals()[task_setup.__name__] = task_setup
+    exitcode = DoitMain(ModuleTaskLoader(globals())).run(doit_args + task_names)
+    sys.exit(exitcode)
+
+@cli.command()
+@click.pass_context
+@click.option('-p', '--patterns', multiple=True, help='patterns help')
+def show(ctx, patterns, **kwargs):
+    domains = get_domains(patterns or ctx.obj['patterns'])
+    def task_show():
+        return {
+            'actions': ['sleep 0.1'] + [
+                f'echo "- {domain}"' for domain in domains
+            ],
+        }
+    return task_show
+
+def gen_dig(workdir, domains):
+    def task_dig():
+        for domain in domains:
+            yield {
+                'name': domain,
+                'task_dep': [
+                    'setup',
+                ],
+                'actions': [
+                    f'mkdir -p {workdir}/{domain}',
+                    f'dig {domain} 2> {workdir}/{domain}/dig',
+                ]
+            }
+    return task_dig
+
+@cli.command()
+@click.pass_context
+@click.option('-p', '--patterns', multiple=True, help='patterns help')
+def dig(ctx, patterns, **kwargs):
+    domains = get_domains(patterns or ctx.obj['patterns'])
+    return gen_dig(ctx.obj.workdir, domains)
+
+def gen_host(workdir, domains):
+    def task_host():
+        for domain in domains:
+            yield {
+                'name': domain,
+                'task_dep': [
+                    'setup',
+                ],
+                'actions': [
+                    f'mkdir -p {workdir}/{domain}',
+                    f'host {domain} 2> {workdir}/{domain}/host || true',
+                ]
+            }
+    return task_host
+
+@cli.command()
+@click.option('-p', '--patterns', multiple=True, help='patterns help')
+@click.pass_context
+def host(ctx, patterns, **kwargs):
+    domains = get_domains(patterns or ctx.obj.patterns)
+    return gen_host(ctx.obj.workdir, domains)
+
+def gen_ssl(workdir, domains, port):
+    def task_ssl():
+        openssl_args = '-noout -text'
+        for domain in domains:
+            cmd = f'echo -n | openssl s_client -connect {domain}:{port} -servername {domain} 2> /dev/null | openssl x509 {openssl_args} > {workdir}/{domain}/ssl'
+            yield {
+                'name': domain,
+                'task_dep': [
+                    'setup',
+                ],
+                'actions': [
+                    f'mkdir -p {workdir}/{domain}',
+                    f'{cmd}',
+                ],
+            }
+    return task_ssl
+
+@cli.command()
+@click.option('-p', '--patterns', multiple=True, help='patterns help')
+@click.option('-P', '--port', default=443, help='specify port')
+@click.pass_context
+def ssl(ctx, patterns, port, **kwargs):
+    domains = get_domains(patterns or ctx.obj.patterns)
+    return gen_ssl(ctx.obj.workdir, domains, port)
 
 if __name__ == '__main__':
-    cli()
+    cli(obj=AttrDict())
