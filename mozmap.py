@@ -52,7 +52,7 @@ def output_print(obj, output):
     elif output == 'json':
         print(json.dumps(obj, indent=2))
 
-@task(name='smeetup')
+@task(name='setup')
 def task_setup(ctx, workdir=WORKDIR):
     print('- setup', file=sys.stderr)
     shutil.rmtree(workdir, ignore_errors=True)
