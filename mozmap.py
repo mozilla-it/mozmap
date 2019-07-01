@@ -21,7 +21,7 @@ from leatherman.yaml import yaml_print, yaml_format
 from leatherman.dbg import dbg
 
 DOIT_CONFIG = {
-    #'verbosity': 2,
+    'verbosity': 2,
     'continue': True,
 }
 
@@ -100,7 +100,7 @@ def process_pipeline(tasks, *args, version=None, workdir=None, patterns=None, nu
 
 @cli.command()
 @click.pass_context
-@click.option('-p', '--patterns', multiple=True, help='patterns help')
+@click.option('-p', '--patterns', metavar='PN', multiple=True, help='patterns help')
 def show(ctx, patterns, **kwargs):
     domains = get_domains(patterns or ctx.obj['patterns'])
     def task_show():
@@ -121,14 +121,14 @@ def gen_dig(workdir, domains):
                 ],
                 'actions': [
                     f'mkdir -p {workdir}/{domain}',
-                    f'dig {domain} 2> {workdir}/{domain}/dig',
+                    f'dig {domain} > {workdir}/{domain}/dig 2>&1 || true',
                 ]
             }
     return task_dig
 
 @cli.command()
 @click.pass_context
-@click.option('-p', '--patterns', multiple=True, help='patterns help')
+@click.option('-p', '--patterns', metavar='PN', multiple=True, help='patterns help')
 def dig(ctx, patterns, **kwargs):
     domains = get_domains(patterns or ctx.obj['patterns'])
     return gen_dig(ctx.obj.workdir, domains)
@@ -143,13 +143,13 @@ def gen_host(workdir, domains):
                 ],
                 'actions': [
                     f'mkdir -p {workdir}/{domain}',
-                    f'host {domain} 2> {workdir}/{domain}/host || true',
+                    f'host {domain} > {workdir}/{domain}/host 2>&1 || true',
                 ]
             }
     return task_host
 
 @cli.command()
-@click.option('-p', '--patterns', multiple=True, help='patterns help')
+@click.option('-p', '--patterns', metavar='PN', multiple=True, help='patterns help')
 @click.pass_context
 def host(ctx, patterns, **kwargs):
     domains = get_domains(patterns or ctx.obj.patterns)
@@ -159,7 +159,7 @@ def gen_ssl(workdir, domains, port):
     def task_ssl():
         openssl_args = '-noout -text'
         for domain in domains:
-            cmd = f'echo -n | openssl s_client -connect {domain}:{port} -servername {domain} 2> /dev/null | openssl x509 {openssl_args} > {workdir}/{domain}/ssl'
+            cmd = f'echo -n | openssl s_client -connect {domain}:{port} -servername {domain} 2> /dev/null | openssl x509 {openssl_args} > {workdir}/{domain}/ssl 2>&1 || true'
             yield {
                 'name': domain,
                 'task_dep': [
@@ -173,7 +173,7 @@ def gen_ssl(workdir, domains, port):
     return task_ssl
 
 @cli.command()
-@click.option('-p', '--patterns', multiple=True, help='patterns help')
+@click.option('-p', '--patterns', metavar='PN', multiple=True, help='patterns help')
 @click.option('-P', '--port', default=443, help='specify port')
 @click.pass_context
 def ssl(ctx, patterns, port, **kwargs):
