@@ -60,8 +60,9 @@ def default_processes():
 @click.option('-w', '--workdir', metavar='PATH', default=WORKDIR, help='set workdir')
 @click.option('-p', '--patterns', metavar='PN', default=('*'), multiple=True, help='patterns to match domains')
 @click.option('-n', '--num-processes', metavar='INT', default=default_processes(), help='num processes')
+@click.option('-o', '--output', type=click.Choice(OUTPUT), default=default_output(), help='select output type')
 @click.pass_context
-def cli(ctx, version, workdir, patterns, num_processes):
+def cli(ctx, version, workdir, patterns, num_processes, output):
     if version:
         print('version: 0.0.1')
     ctx.ensure_object(AttrDict)
@@ -79,8 +80,22 @@ def load_tasks(tasks):
         globals()[task.__name__] = task
     return task_names
 
+def create_result(workdir, output):
+    print('---', flush=True)
+    pairs = [
+        (os.path.basename(root), file)
+        for root, dirs, files in os.walk(workdir) if files
+        for file in files
+    ]
+    result = {}
+    for domain, task in pairs:
+        chunk = result.get(domain, {})
+        chunk[task] = open(f'{workdir}/{domain}/{task}').read().strip()
+        result[domain] = chunk
+    output_print(result, output)
+
 @cli.resultcallback()
-def process_pipeline(tasks, *args, version=None, workdir=None, patterns=None, num_processes=None, **kwargs):
+def process_pipeline(tasks, *args, version=None, workdir=None, patterns=None, num_processes=None, output=None, **kwargs):
     doit_args = ['-n', num_processes, '--continue']
     task_names = load_tasks(tasks)
     if not task_names:
@@ -96,6 +111,7 @@ def process_pipeline(tasks, *args, version=None, workdir=None, patterns=None, nu
         }
     globals()[task_setup.__name__] = task_setup
     exitcode = DoitMain(ModuleTaskLoader(globals())).run(doit_args + task_names)
+    create_result(workdir, output)
     sys.exit(exitcode)
 
 @cli.command()
@@ -103,13 +119,8 @@ def process_pipeline(tasks, *args, version=None, workdir=None, patterns=None, nu
 @click.option('-p', '--patterns', metavar='PN', multiple=True, help='patterns help')
 def show(ctx, patterns, **kwargs):
     domains = get_domains(patterns or ctx.obj['patterns'])
-    def task_show():
-        return {
-            'actions': ['sleep 0.1'] + [
-                f'echo "- {domain}"' for domain in domains
-            ],
-        }
-    return task_show
+    yaml_print(dict(domains=list(domains)))
+    sys.exit(0)
 
 def gen_dig(workdir, domains):
     def task_dig():
@@ -121,7 +132,7 @@ def gen_dig(workdir, domains):
                 ],
                 'actions': [
                     f'mkdir -p {workdir}/{domain}',
-                    f'dig {domain} > {workdir}/{domain}/dig 2>&1 || true',
+                    f'dig +short {domain} > {workdir}/{domain}/dig 2>&1 || true',
                 ]
             }
     return task_dig
@@ -181,4 +192,5 @@ def ssl(ctx, patterns, port, **kwargs):
     return gen_ssl(ctx.obj.workdir, domains, port)
 
 if __name__ == '__main__':
-    cli(obj=AttrDict())
+    cfg = AttrDict()
+    cli(obj=cfg)
