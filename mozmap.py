@@ -96,12 +96,13 @@ def create_result(workdir, output):
 
 @cli.resultcallback()
 def process_pipeline(tasks, *args, version=None, workdir=None, patterns=None, num_processes=None, output=None, **kwargs):
+    dbg(kwargs)
     doit_args = ['-n', num_processes, '--continue']
     task_names = load_tasks(tasks)
     if not task_names:
         domains = get_domains(patterns)
         task_names = load_tasks([
-            gen_task(workdir, domains) for gen_task in (gen_dig, gen_host, gen_ssl)
+            gen_task(workdir, domains, port=443) for gen_task in (gen_dig, gen_host, gen_ssl)
         ])
     def task_setup():
         return {
@@ -122,7 +123,7 @@ def show(ctx, patterns, **kwargs):
     yaml_print(dict(domains=list(domains)))
     sys.exit(0)
 
-def gen_dig(workdir, domains):
+def gen_dig(workdir, domains, **kwargs):
     def task_dig():
         for domain in domains:
             yield {
@@ -144,7 +145,7 @@ def dig(ctx, patterns, **kwargs):
     domains = get_domains(patterns or ctx.obj['patterns'])
     return gen_dig(ctx.obj.workdir, domains)
 
-def gen_host(workdir, domains):
+def gen_host(workdir, domains, **kwargs):
     def task_host():
         for domain in domains:
             yield {
@@ -166,7 +167,7 @@ def host(ctx, patterns, **kwargs):
     domains = get_domains(patterns or ctx.obj.patterns)
     return gen_host(ctx.obj.workdir, domains)
 
-def gen_ssl(workdir, domains, port):
+def gen_ssl(workdir, domains, port, **kwargs):
     def task_ssl():
         openssl_args = '-noout -text'
         for domain in domains:
@@ -187,7 +188,7 @@ def gen_ssl(workdir, domains, port):
 @click.option('-p', '--patterns', metavar='PN', multiple=True, help='patterns help')
 @click.option('-P', '--port', default=443, help='specify port')
 @click.pass_context
-def ssl(ctx, patterns, port, **kwargs):
+def ssl(ctx, patterns, port=443, **kwargs):
     domains = get_domains(patterns or ctx.obj.patterns)
     return gen_ssl(ctx.obj.workdir, domains, port)
 
